@@ -1,4 +1,5 @@
 version: '3.8'
+
 services:
   postgres:
     image: postgres:15
@@ -22,6 +23,22 @@ services:
       - "8080:80"
     depends_on:
       - postgres
+
+  garage-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: garage-app
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/garage_db
+      SPRING_DATASOURCE_USERNAME: garage
+      SPRING_DATASOURCE_PASSWORD: garage
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8081:8080"
+    depends_on:
+      - postgres
+    restart: unless-stopped
 
 volumes:
   postgres_data:
