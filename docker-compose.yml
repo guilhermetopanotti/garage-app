@@ -1,0 +1,27 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: garage-db
+    environment:
+      POSTGRES_USER: garage
+      POSTGRES_PASSWORD: garage
+      POSTGRES_DB: garage_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  pgadmin:
+    image: dpage/pgadmin4:8
+    container_name: garage-pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@garage.com
+      PGADMIN_DEFAULT_PASSWORD: garage
+    ports:
+      - "8080:80"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
